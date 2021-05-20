@@ -1,0 +1,48 @@
+specVersion: 0.0.2
+description: Batch or categorically lookup DeFi token balanaces
+repository: https://github.com/prabhaav/defi-graph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - name: DAI
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      address: "0x6b175474e89094c44da98b954eedeac495271d0f"
+      abi: Token
+      startBlock: 12459563
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/token.ts
+      entities:
+        - User
+        - Asset
+      abis:
+        - name: Token
+          file: ./abis/token.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+  - name: USDC
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      abi: Token
+      startBlock: 12459563
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/token.ts
+      entities:
+        - User
+        - Asset
+      abis:
+        - name: Token
+          file: ./abis/token.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer

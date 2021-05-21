@@ -18,7 +18,6 @@ type Asset @entity {
 
 """
 Account is an ETH address, with a list of all Token assets the account has
-participated in, along with liquidation information.
 """
 type Account @entity {
     "User ETH address"
@@ -28,8 +27,7 @@ type Account @entity {
 }
 
 """
-AccountToken is a single account within a single Token asset, with data such
-as interest earned or paid
+AccountToken is a single account within a single Token asset
 """
 type AccountToken @entity {
     "Concatenation of Token address and user address"
@@ -40,62 +38,64 @@ type AccountToken @entity {
     symbol: String!
     "Relation to user"
     account: Account!
-    "Transactions data"
-    transactions: [AccountTokenTransaction!]! @derivedFrom(field:"account")
+    "Defi asset category"
+    category: String!
+    # "Transactions data"
+    # transactions: [AccountTokenTransaction!]! @derivedFrom(field:"account")
     "Token balance of the user"
-    TokenBalance: BigDecimal!
+    balance: BigDecimal!
 }
 
-"""
-Auxiliary entity for AccountToken
-"""
-type AccountTokenTransaction @entity {
-  id: ID!
-  account: AccountToken!
-  tx_hash: Bytes!
-  timestamp: BigInt!
-  block: BigInt!
-  logIndex: BigInt!
-}
+# """
+# Auxiliary entity for AccountToken
+# """
+# type AccountTokenTransaction @entity {
+#   id: ID!
+#   account: AccountToken!
+#   tx_hash: Bytes!
+#   timestamp: BigInt!
+#   block: BigInt!
+#   logIndex: BigInt!
+# }
 
-"""
-An interface for a transfer of any Token. TransferEvent, MintEvent,
-RedeemEvent, and LiquidationEvent all use this interface
-"""
-interface TokenTransfer {
-    "Transaction hash concatenated with log index"
-    id: ID!
-    "Tokens transferred"
-    amount: BigDecimal!
-    "Account that received tokens"
-    to: Bytes!
-    "Account that sent tokens"
-    from: Bytes!
-    "Block number"
-    blockNumber: Int!
-    "Block time"
-    blockTime: Int!
-    "Symbol of the Token transferred"
-    TokenSymbol: String!
-}
+# """
+# An interface for a transfer of any Token. TransferEvent, MintEvent,
+# RedeemEvent, and LiquidationEvent all use this interface
+# """
+# interface TokenTransfer {
+#     "Transaction hash concatenated with log index"
+#     id: ID!
+#     "Tokens transferred"
+#     amount: BigDecimal!
+#     "Account that received tokens"
+#     to: Bytes!
+#     "Account that sent tokens"
+#     from: Bytes!
+#     "Block number"
+#     blockNumber: Int!
+#     "Block time"
+#     blockTime: Int!
+#     "Symbol of the Token transferred"
+#     symbol: String!
+# }
 
-"""
-TransferEvent will be stored for every mint, redeem, liquidation, and any normal
-transfer between two accounts.
-"""
-type TransferEvent implements TokenTransfer @entity {
-    "Transaction hash concatenated with log index"
-    id: ID!
-    "Tokens transferred"
-    amount: BigDecimal!
-    "Account that received tokens"
-    to: Bytes!
-    "Account that sent tokens"
-    from: Bytes!
-    "Block number"
-    blockNumber: Int!
-    "Block time"
-    blockTime: Int!
-    "Symbol of the Token transferred"
-    TokenSymbol: String!
-}
+# """
+# TransferEvent will be stored for every mint, redeem, liquidation, and any normal
+# transfer between two accounts.
+# """
+# type TransferEvent implements TokenTransfer @entity {
+#     "Transaction hash concatenated with log index"
+#     id: ID!
+#     "Tokens transferred"
+#     amount: BigDecimal!
+#     "Account that received tokens"
+#     to: Bytes!
+#     "Account that sent tokens"
+#     from: Bytes!
+#     "Block number"
+#     blockNumber: Int!
+#     "Block time"
+#     blockTime: Int!
+#     "Symbol of the Token transferred"
+#     symbol: String!
+# }

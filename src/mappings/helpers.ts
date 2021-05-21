@@ -2,7 +2,7 @@
 
 // For each division by 10, add one to exponent to truncate one significant figure
 import { BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts'
-import { AccountToken, Account, AccountTokenTransaction } from '../types/schema'
+import { AccountToken, Account } from '../types/schema'
 
 export function exponentToBigDecimal(decimals: i32): BigDecimal {
   let bd = BigDecimal.fromString('1')
@@ -26,7 +26,7 @@ export function createAccountToken(
   TokenStats.symbol = symbol
   TokenStats.asset = assetID
   TokenStats.account = account
-  TokenStats.TokenBalance = zeroBD
+  TokenStats.balance = zeroBD
   return TokenStats
 }
 
@@ -50,39 +50,39 @@ export function updateCommonTokenStats(
   if (TokenStats == null) {
     TokenStats = createAccountToken(TokenStatsID, assetSymbol, accountID, assetID)
   }
-  getOrCreateAccountTokenTransaction(
-    TokenStatsID,
-    tx_hash,
-    timestamp,
-    blockNumber,
-    logIndex,
-  )
+  // getOrCreateAccountTokenTransaction(
+  //   TokenStatsID,
+  //   tx_hash,
+  //   timestamp,
+  //   blockNumber,
+  //   logIndex,
+  // )
   return TokenStats as AccountToken
 }
 
-export function getOrCreateAccountTokenTransaction(
-  accountID: string,
-  tx_hash: Bytes,
-  timestamp: BigInt,
-  block: BigInt,
-  logIndex: BigInt,
-): AccountTokenTransaction {
-  let id = accountID
-    .concat('-')
-    .concat(tx_hash.toHexString())
-    .concat('-')
-    .concat(logIndex.toString())
-  let transaction = AccountTokenTransaction.load(id)
+// export function getOrCreateAccountTokenTransaction(
+//   accountID: string,
+//   tx_hash: Bytes,
+//   timestamp: BigInt,
+//   block: BigInt,
+//   logIndex: BigInt,
+// ): AccountTokenTransaction {
+//   let id = accountID
+//     .concat('-')
+//     .concat(tx_hash.toHexString())
+//     .concat('-')
+//     .concat(logIndex.toString())
+//   let transaction = AccountTokenTransaction.load(id)
 
-  if (transaction == null) {
-    transaction = new AccountTokenTransaction(id)
-    transaction.account = accountID
-    transaction.tx_hash = tx_hash
-    transaction.timestamp = timestamp
-    transaction.block = block
-    transaction.logIndex = logIndex
-    transaction.save()
-  }
+//   if (transaction == null) {
+//     transaction = new AccountTokenTransaction(id)
+//     transaction.account = accountID
+//     transaction.tx_hash = tx_hash
+//     transaction.timestamp = timestamp
+//     transaction.block = block
+//     transaction.logIndex = logIndex
+//     transaction.save()
+//   }
 
-  return transaction as AccountTokenTransaction
-}
+//   return transaction as AccountTokenTransaction
+// }

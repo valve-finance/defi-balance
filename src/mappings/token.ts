@@ -1,7 +1,8 @@
 /* eslint-disable prefer-const */ // to satisfy AS compiler
 import { log } from '@graphprotocol/graph-ts'
 import { Transfer } from '../types/DAI/Token'
-import { Asset, Account, TransferEvent } from '../types/schema'
+import { Asset, Account, } from '../types/schema'
+import { DeFiCategory } from './constants'
 
 import {
   createAccount,
@@ -51,12 +52,13 @@ export function handleTransfer(event: Transfer): void {
       event.block.number,
       event.logIndex,
     )
-    TokenStatsFrom.TokenBalance = TokenStatsFrom.TokenBalance.minus(
+    TokenStatsFrom.balance = TokenStatsFrom.balance.minus(
       event.params.value
         .toBigDecimal()
         .div(TokenDecimalsBD)
         .truncate(TokenDecimals),
     )
+    TokenStatsFrom.category = DeFiCategory.get(assetID) as string
     TokenStatsFrom.save()
   }
 
@@ -83,27 +85,27 @@ export function handleTransfer(event: Transfer): void {
       event.logIndex,
     )
 
-    TokenStatsTo.TokenBalance = TokenStatsTo.TokenBalance.plus(
+    TokenStatsTo.balance = TokenStatsTo.balance.plus(
       event.params.value
         .toBigDecimal()
         .div(TokenDecimalsBD)
         .truncate(TokenDecimals),
     )
-
+    TokenStatsTo.category = DeFiCategory.get(assetID) as string
     TokenStatsTo.save()
   }
 
-  let transferID = event.transaction.hash
-    .toHexString()
-    .concat('-')
-    .concat(event.transactionLogIndex.toString())
+  // let transferID = event.transaction.hash
+  //   .toHexString()
+  //   .concat('-')
+  //   .concat(event.transactionLogIndex.toString())
 
-  let transfer = new TransferEvent(transferID)
-  transfer.amount = event.params.value.toBigDecimal().div(TokenDecimalsBD)
-  transfer.to = event.params.to
-  transfer.from = event.params.from
-  transfer.blockNumber = event.block.number.toI32()
-  transfer.blockTime = event.block.timestamp.toI32()
-  transfer.TokenSymbol = asset.symbol
-  transfer.save()
+  // let transfer = new TransferEvent(transferID)
+  // transfer.amount = event.params.value.toBigDecimal().div(TokenDecimalsBD)
+  // transfer.to = event.params.to
+  // transfer.from = event.params.from
+  // transfer.blockNumber = event.block.number.toI32()
+  // transfer.blockTime = event.block.timestamp.toI32()
+  // transfer.symbol = asset.symbol
+  // transfer.save()
 }

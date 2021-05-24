@@ -9,8 +9,6 @@ export function exponentToBigDecimal(decimals: i32): BigDecimal {
   return bd
 }
 
-export let TokenDecimals = 8
-export let TokenDecimalsBD: BigDecimal = exponentToBigDecimal(8)
 export let zeroBD = BigDecimal.fromString('0')
 
 export function createAccountToken(

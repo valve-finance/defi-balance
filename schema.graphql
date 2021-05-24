@@ -8,6 +8,8 @@ type Asset @entity {
     name: String!
     "Token symbol"
     symbol: String!
+    "Token decimals"
+    decimals: Int!
     "Defi asset category"
     category: String!
 }

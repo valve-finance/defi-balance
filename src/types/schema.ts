@@ -60,6 +60,15 @@ export class Asset extends Entity {
     this.set("symbol", Value.fromString(value));
   }
 
+  get decimals(): i32 {
+    let value = this.get("decimals");
+    return value.toI32();
+  }
+
+  set decimals(value: i32) {
+    this.set("decimals", Value.fromI32(value));
+  }
+
   get category(): string {
     let value = this.get("category");
     return value.toString();

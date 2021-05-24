@@ -1,15 +1,15 @@
 {
-  "name": "defi-graph",
+  "name": "defi-balance",
   "version": "1.0.0",
-  "repository": "https://github.com/prabhaav/defi-graph",
+  "repository": "https://github.com/valve-finance/defi-balance",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen --output-dir src/types/",
     "build": "graph build --ipfs https://api.staging.thegraph.com/ipfs/ ",
-    "create-local": "graph create graphprotocol/compound-v2 --node http://127.0.0.1:8020",
-    "deploy-local": "graph deploy graphprotocol/compound-v2 --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020/",
-    "deploy": "graph deploy prabhaav/scratchspace --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-staging": "graph deploy --debug --ipfs https://api.staging.thegraph.com/ipfs/ --node https://api.staging.thegraph.com/deploy/ davekaj/compoundv2",
+    "create-local": "graph create $YOUR_SUB_GRAPH --node http://127.0.0.1:8020",
+    "deploy-local": "graph deploy $YOUR_SUB_GRAPH --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020/",
+    "deploy": "graph deploy $YOUR_SUB_GRAPH --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token $_YOUR_GRAPH_TOKEN",
+    "deploy-staging": "graph deploy --debug --ipfs https://api.staging.thegraph.com/ipfs/ --node https://api.staging.thegraph.com/deploy/ $YOUR_SUB_GRAPH",
     "prettier": "./node_modules/.bin/prettier —-write '**/*.ts'",
     "launch": "npm run codegen && npm run build && npm run deploy"
   },

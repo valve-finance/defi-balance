@@ -1,5 +1,3 @@
-/* eslint-disable prefer-const */ // to satisfy AS compiler
-
 import { Address } from '@graphprotocol/graph-ts'
 import { Asset } from '../types/schema'
 import { Token } from '../types/DAI/Token'
@@ -16,25 +14,5 @@ export function createAsset(assetAddress: string): Asset {
     asset.symbol = underlyingContract.symbol()
   }
   asset.category = DeFiCategory.get(assetAddress) as string
-  asset.blockTimestamp = 0
-  asset.accrualBlockNumber = 0
   return asset
-}
-
-export function updateAsset(
-  assetAddress: Address,
-  blockNumber: i32,
-  blockTimestamp: i32,
-): Asset {
-  let assetID = assetAddress.toHexString()
-  let asset = Asset.load(assetID)
-  if (asset == null) {
-    asset = createAsset(assetID)
-  }
-  if (asset.accrualBlockNumber != blockNumber) {
-    asset.accrualBlockNumber = blockNumber
-    asset.blockTimestamp = blockTimestamp
-    asset.save()
-  }
-  return asset as Asset
 }

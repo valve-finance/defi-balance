@@ -10,10 +10,6 @@ type Asset @entity {
     symbol: String!
     "Defi asset category"
     category: String!
-    "Timestamp the asset was most recently updated"
-    blockTimestamp: Int!
-    "Block the market is updated to"
-    accrualBlockNumber: Int!
 }
 
 """
@@ -30,8 +26,10 @@ type Account @entity {
 AccountToken is a single account within a single Token asset
 """
 type AccountToken @entity {
-    "Concatenation of Token address and user address"
+    "Token address + User address"
     id: ID!
+    "User address"
+    userID: String!
     "Relation to asset"
     asset: Asset!
     "Symbol of the Token"
@@ -40,62 +38,6 @@ type AccountToken @entity {
     account: Account!
     "Defi asset category"
     category: String!
-    # "Transactions data"
-    # transactions: [AccountTokenTransaction!]! @derivedFrom(field:"account")
     "Token balance of the user"
     balance: BigDecimal!
 }
-
-# """
-# Auxiliary entity for AccountToken
-# """
-# type AccountTokenTransaction @entity {
-#   id: ID!
-#   account: AccountToken!
-#   tx_hash: Bytes!
-#   timestamp: BigInt!
-#   block: BigInt!
-#   logIndex: BigInt!
-# }
-
-# """
-# An interface for a transfer of any Token. TransferEvent, MintEvent,
-# RedeemEvent, and LiquidationEvent all use this interface
-# """
-# interface TokenTransfer {
-#     "Transaction hash concatenated with log index"
-#     id: ID!
-#     "Tokens transferred"
-#     amount: BigDecimal!
-#     "Account that received tokens"
-#     to: Bytes!
-#     "Account that sent tokens"
-#     from: Bytes!
-#     "Block number"
-#     blockNumber: Int!
-#     "Block time"
-#     blockTime: Int!
-#     "Symbol of the Token transferred"
-#     symbol: String!
-# }
-
-# """
-# TransferEvent will be stored for every mint, redeem, liquidation, and any normal
-# transfer between two accounts.
-# """
-# type TransferEvent implements TokenTransfer @entity {
-#     "Transaction hash concatenated with log index"
-#     id: ID!
-#     "Tokens transferred"
-#     amount: BigDecimal!
-#     "Account that received tokens"
-#     to: Bytes!
-#     "Account that sent tokens"
-#     from: Bytes!
-#     "Block number"
-#     blockNumber: Int!
-#     "Block time"
-#     blockTime: Int!
-#     "Symbol of the Token transferred"
-#     symbol: String!
-# }

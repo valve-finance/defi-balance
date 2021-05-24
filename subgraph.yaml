@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: Batch or categorically lookup DeFi token balanaces
+description: Batch or categorically lookup DeFi token balances
 repository: https://github.com/valve-finance/defi-balance
 schema:
   file: ./schema.graphql

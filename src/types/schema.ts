@@ -68,24 +68,6 @@ export class Asset extends Entity {
   set category(value: string) {
     this.set("category", Value.fromString(value));
   }
-
-  get blockTimestamp(): i32 {
-    let value = this.get("blockTimestamp");
-    return value.toI32();
-  }
-
-  set blockTimestamp(value: i32) {
-    this.set("blockTimestamp", Value.fromI32(value));
-  }
-
-  get accrualBlockNumber(): i32 {
-    let value = this.get("accrualBlockNumber");
-    return value.toI32();
-  }
-
-  set accrualBlockNumber(value: i32) {
-    this.set("accrualBlockNumber", Value.fromI32(value));
-  }
 }
 
 export class Account extends Entity {
@@ -156,6 +138,15 @@ export class AccountToken extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get userID(): string {
+    let value = this.get("userID");
+    return value.toString();
+  }
+
+  set userID(value: string) {
+    this.set("userID", Value.fromString(value));
   }
 
   get asset(): string {

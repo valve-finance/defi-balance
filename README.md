@@ -1,72 +1,138 @@
-# DeFi Subgraphs
+# DeFi Balance Subgraph
 
-## Problem
-Given up to a 1000 wallet addresses, and a block ID, we will return the token balances of the DeFi pulse index for those wallets. You can also cut it by category: lending, DEXs, Derivatives, Assets.
+## Description
+This subgraph tracks the token balances of the most popular DeFi tokens and presents them in a easily queriable manner. The assets we currently track are: 
 
-## Key Features
+- Stable Coin Tokens: DAI, USDC, USDT, TUSD, BUSD
+- Lending Tokens: MKR, COMP, AAVE, LQTY, ALPHA, ALCX
+- DEX Tokens: UNI, CRV, BAL, SUSHI, BNT, LRC
+- Derivatives Tokens: SNX, NXM, BOND, HEGIC, FST, DDX
+- Asset Manager Tokens: YFI, VSP, BADGER, REN, FARM
+- Payment Tokens: MATIC, TORN, STAKE
 
-### For The Graph
+## Useful Links
 
-1. GraphQL (GQL) API that allows balance fetches for 1000 wallet addresses.
-2. Default return behavior is the balance of all tokens in the Defi Pulse Index (DPI)
-3. Optional return behavior by category. (Only return the balances of tokens in a segment or category of the DPI.  e.g. Lending, DEXs, Derivatives, Assets ...)
-4. Statistics
-    - Top 10 addresses & balances for each DPI token.
-5. Threshold filtering.  e.g. Results greater, less than, or between specified balance(s).
-6. [Questionable if Possible] Historic data.
-    - Balance at or near timestamp
-    - Balance at or near block number
+Subgraph is hosted at: https://thegraph.com/explorer/subgraph/valve-finance/defi-balance
 
-### For DApps
+Subgraph API can be queried at: https://api.thegraph.com/subgraphs/name/valve-finance/defi-balance
 
-*Each Token in our subgraph should have its own statistics entity that computes the following items to address the underlined information.*
 
-Breakout: high utilization of an asset
+## Build Instructions
+1. Replace `$YOUR_SUB_GRAPH` with the name of your subgraph
+2. Replace `$YOUR_GRAPH_ACCESS_TOKEN` with your access token
+3. Run below commands:
+```
+    yarn
+    yarn codegen
+    yarn build
+    yarn deploy
+```
 
-- Can use either or both transaction count and amount mentioned below.
+## Features & Capabilities
+Given up to a 1000 wallet addresses, and a block ID, we will return the token balances of the DeFi pulse index for those wallets. You can also cut it by category: lending, DEXs, Derivatives, Assets. 
 
-Number of Transactions in asset daily/weekly/monthly
+Below are a few examples of types of queries that can be run:
 
-- Transaction Count
-    - last block
-    - last three blocks
-    - last hour
-    - day
-    - week
-    - month
+### Get all supported assets
+```
+{
+  assets(first: 100) {
+    id
+    name
+    symbol
+    decimals
+    category
+  }
+}
+```
 
-Large fund movements, see rug pulls, fund drains, exploits
+### Get Top 100 holders of a given asset
+```
+{
+  accountTokens (
+    first: 100
+    orderBy: balance
+    orderDirection: desc
+    where: {
+      balance_gt: 0
+      symbol: "DAI"
+    }
+  ) {
+    userID
+    balance
+  }
+}
+```
 
-- Total Transaction Amount (abs. value of inflow/outflow)
-    - last block
-    - last three blocks
-    - last hour
-    - day
+### Get balance of DPI assets for given list of wallets (up to 1000 wallets)
+```
+{
+  accounts (
+    where: {
+      id_in: [
+        "0x0000000000007f150bd6f54c40a34d7c3d5e9f56",
+        "0x00000000b7ca7e12dcc72290d1fe47b2ef14c607",
+        "0x0000006daea1723962647b7e189d311d757fb793"
+      ]
+    }
+  ) {
+    id
+    tokens (
+      where: {
+        balance_gt: 0
+      }
+    ) {
+      symbol
+      balance
+    }
+  }
+}
+```
 
-Drastic changes in # of wallets holding asset
+### Get balance for a category of assets
+```
+{
+  accounts (
+    where: {
+      id_in: [
+        "0x0000000000007f150bd6f54c40a34d7c3d5e9f56",
+        "0x00000000b7ca7e12dcc72290d1fe47b2ef14c607",
+        "0x0000006daea1723962647b7e189d311d757fb793"
+      ]
+    }
+  ) {
+    id
+    tokens (
+      where: {
+        category: "Lending"
+        balance_gt: 0
+      }
+    ) {
+      symbol
+      balance
+    }
+  }
+}
+```
 
-- Holders count (the current number of wallets holding the asset)
-    - last block
-    - last three blocks
-    - last hour
-    - day
-
-Top holders of asset
-
-- Top X holders list
-
-Top inflows of asset
-
-- Top X inflows
-    - all time
-    - hour
-    - day
-    - month
-
-Top outflows of asset
-
-- Top X outflows
-    - all time
-    - hour
-    - day
-    - month
+### Get token balance at specified block number
+```
+{
+  accounts(
+    where: {
+      id_in: [
+        "0x0000000000007f150bd6f54c40a34d7c3d5e9f56",
+        "0x00000000b7ca7e12dcc72290d1fe47b2ef14c607",
+        "0x0000006daea1723962647b7e189d311d757fb793"
+      ]
+    }
+    block: {number: 12459565}
+  ) {
+    id
+    tokens {
+      symbol
+      balance
+    }
+  }
+}
+```

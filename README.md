@@ -1,4 +1,4 @@
-# DeFi Subgraphs
+# DeFi Balance Subgraph
 
 ## Description
 This subgraph tracks the token balances of the most popular DeFi tokens and presents them in a easily queriable manner. The assets we currently track are: 

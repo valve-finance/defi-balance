@@ -3,6 +3,9 @@ description: Batch or categorically lookup DeFi token balances
 repository: https://github.com/valve-finance/defi-balance
 schema:
   file: ./schema.graphql
+# graft:
+#   base: Qmav5pEiXBKfa8ycG1sGZfp7PVfkEuGGmLyQ6VmEaHTMyK
+#   block: 7006712
 dataSources:
   - name: DAI
     kind: ethereum/contract

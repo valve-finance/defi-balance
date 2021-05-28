@@ -58,7 +58,7 @@ export function handleTransfer(event: Transfer): void {
         .truncate(TokenDecimals),
     )
     TokenStatsTo.category = DeFiCategory.get(assetID) as string
-    TokenStatsTo.userID = accountFromID
+    TokenStatsTo.userID = accountToID
     TokenStatsTo.save()
   }
 }
